@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Validation Report</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7f2;
+            color: #172c25;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 6%;
+            background: white;
+            border-bottom: 1px solid #e3e9e1;
+        }
+        .brand { color: #23734d; font-weight: bold; }
+        a { color: #216747; text-decoration: none; }
+        .back { font-weight: bold; }
+        main { max-width: 950px; margin: 35px auto; padding: 0 20px 50px; }
+        .intro, .card {
+            background: white;
+            border: 1px solid #e3e9e1;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 18px;
+            overflow-wrap: anywhere;
+        }
+        h1 { font-size: clamp(26px, 4vw, 36px); margin: 10px 0; }
+        h2 { font-size: 21px; color: #216747; }
+        h3 { margin-bottom: 8px; }
+        p { line-height: 1.7; color: #53645a; }
+        .eyebrow { color: #23734d; font-size: 12px; font-weight: bold; letter-spacing: 1px; }
+        .score {
+            display: inline-block;
+            padding: 8px 13px;
+            background: #eaf4ec;
+            border-radius: 9px;
+            color: #216747;
+            font-weight: bold;
+        }
+        .notice {
+            padding: 15px;
+            background: #fff8e7;
+            border: 1px solid #f1dfaa;
+            border-radius: 10px;
+            color: #6f5514;
+            line-height: 1.6;
+        }
+        .item { padding: 12px 0; border-bottom: 1px solid #edf0eb; }
+        .item:last-child { border-bottom: 0; }
+        .item p { margin: 6px 0; }
+        .back-button {
+            display: inline-block;
+            padding: 12px 17px;
+            background: #216747;
+            color: white;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        @media(max-width: 500px) {
+            header { padding: 16px; }
+            main { margin-top: 22px; }
+            .intro, .card { padding: 18px; }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="brand">✦ STARTUP VALIDATOR AI</div>
+    <a class="back" href="{{ url_for('dashboard') }}">← Dashboard</a>
+</header>
+
+<main>
+    <section class="intro">
+        <div class="eyebrow">STARTUP IDEA ANALYSIS</div>
+        <h1>{{ report['idea'] }}</h1>
+        <p><strong>Industry:</strong> {{ report['industry'] or 'Not specified' }}</p>
+        <p><strong>Target customers:</strong> {{ report['customers'] or 'Not specified' }}</p>
+        <p><strong>Report created:</strong> {{ report['created_at'] }}</p>
+
+        {% if analysis.get('startup_name') %}
+            <h2>{{ analysis.get('startup_name') }}</h2>
+        {% endif %}
+
+        {% if analysis.get('score') is not none %}
+            <p class="score">Validation score: {{ analysis.get('score') }}/100</p>
+        {% endif %}
+
+        {% if analysis.get('verdict') %}
+            <p><strong>Verdict:</strong> {{ analysis.get('verdict') }}</p>
+        {% endif %}
+
+        {% if analysis.get('executive_summary') %}
+            <p>{{ analysis.get('executive_summary') }}</p>
+        {% endif %}
+    </section>
+
+    {% if analysis.get('research_status') %}
+        <div class="notice">
+            <strong>Research note:</strong>
+            {{ analysis.get('research_status') }}
+        </div>
+    {% endif %}
+
+    {% for key, value in analysis.items() %}
+        {% if key not in ['startup_name', 'score', 'verdict', 'executive_summary', 'research_status'] %}
+            <section class="card">
+                <h2>
+                    {{ key.replace('_', ' ').title() }}
+                </h2>
+
+                {% if value is mapping %}
+                    {% for subkey, subvalue in value.items() %}
+                        <div class="item">
+                            <h3>{{ subkey.replace('_', ' ').title() }}</h3>
+                            {% if subvalue is sequence and subvalue is not string %}
+                                {% for entry in subvalue %}
+                                    <p>• {{ entry }}</p>
+                                {% endfor %}
+                            {% else %}
+                                <p>{{ subvalue }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                {% elif value is sequence and value is not string %}
+                    {% for entry in value %}
+                        <div class="item">
+                            {% if entry is mapping %}
+                                {% for subkey, subvalue in entry.items() %}
+                                    <p><strong>{{ subkey.replace('_', ' ').title() }}:</strong> {{ subvalue }}</p>
+                                {% endfor %}
+                            {% else %}
+                                <p>• {{ entry }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                {% else %}
+                    <p>{{ value }}</p>
+                {% endif %}
+            </section>
+        {% endif %}
+    {% else %}
+        <section class="card">
+            <p>No analysis details were found in this saved report.</p>
+        </section>
+    {% endfor %}
+
+    <a class="back-button" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</main>
+</body>
+</html>

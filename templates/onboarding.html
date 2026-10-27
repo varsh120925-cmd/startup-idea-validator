@@ -1,0 +1,165 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Started | Startup Validator AI</title>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7f4;
+            color: #24352d;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 45px auto;
+            padding: 20px;
+        }
+
+        .brand {
+            text-align: center;
+            color: #174c3c;
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .eyebrow {
+            margin-top: 35px;
+            text-align: center;
+            color: #99752f;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .intro {
+            text-align: center;
+            color: #6b756f;
+            line-height: 1.6;
+        }
+
+        .card {
+            background: white;
+            padding: 28px;
+            border: 1px solid #e0e7e1;
+            border-radius: 16px;
+            margin-top: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 20px 0 8px;
+        }
+
+        select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd6ce;
+            border-radius: 8px;
+            background: white;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 28px;
+            padding: 14px;
+            background: #174c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover { background: #23644f; }
+
+        .error {
+            padding: 12px;
+            background: #fbe9e9;
+            color: #963333;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .container { margin: 20px auto; }
+            h1 { font-size: 27px; }
+            .card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <div class="brand">STARTUP VALIDATOR AI</div>
+
+        <div class="eyebrow">GETTING STARTED · 1 MINUTE</div>
+
+        <h1>Let's personalize your workspace.</h1>
+
+        <p class="intro">
+            Tell us a little about yourself so we can help you validate
+            ideas more effectively.
+        </p>
+
+        <div class="card">
+            <form method="POST" action="{{ url_for('onboarding') }}">
+                <label for="role">Which best describes you?</label>
+                <select id="role" name="role" required>
+                    <option value="" selected disabled>Choose your role</option>
+                    <option value="Aspiring founder">Aspiring founder</option>
+                    <option value="Student">Student</option>
+                    <option value="Existing business owner">Existing business owner</option>
+                    <option value="Freelancer">Freelancer</option>
+                    <option value="Product manager">Product manager</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <label for="experience">Your startup experience</label>
+                <select id="experience" name="experience" required>
+                    <option value="" selected disabled>Choose your experience</option>
+                    <option value="I'm exploring my first idea">I'm exploring my first idea</option>
+                    <option value="I've worked on an idea before">I've worked on an idea before</option>
+                    <option value="I've launched a business before">I've launched a business before</option>
+                </select>
+
+                <label for="goal">What is your main goal?</label>
+                <select id="goal" name="goal" required>
+                    <option value="" selected disabled>Choose your goal</option>
+                    <option value="Validate a startup idea">Validate a startup idea</option>
+                    <option value="Understand potential customers">Understand potential customers</option>
+                    <option value="Plan a minimum viable product (MVP)">Plan a minimum viable product (MVP)</option>
+                    <option value="Improve an existing business">Improve an existing business</option>
+                    <option value="Discover business opportunities">Discover business opportunities</option>
+                </select>
+
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="error">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <button type="submit">Build my workspace →</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
+

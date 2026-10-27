@@ -1,0 +1,875 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Idea Validator AI</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        :root {
+            --green: #174c3c;
+            --green-light: #e9f2ed;
+            --gold: #c49a45;
+            --background: #f6f7f4;
+            --white: #ffffff;
+            --text: #202a26;
+            --muted: #68736d;
+            --border: #e1e7e2;
+            --red: #a33d3d;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        header {
+            background: var(--green);
+            color: white;
+            padding: 18px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .brand span {
+            color: #e7c778;
+        }
+
+        .header-links {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            width: min(1100px, 92%);
+            margin: 35px auto;
+        }
+
+        .hero {
+            padding: 35px 0 25px;
+        }
+
+        .eyebrow {
+            color: var(--green);
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        h1 {
+            font-size: clamp(30px, 5vw, 46px);
+            line-height: 1.15;
+            margin: 10px 0;
+        }
+
+        h2 {
+            color: var(--green);
+            margin-top: 0;
+        }
+
+        .subtitle {
+            max-width: 720px;
+            color: var(--muted);
+        }
+
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 22px;
+            box-shadow: 0 5px 22px rgba(24, 50, 38, 0.04);
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 18px 0 7px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #ccd6cf;
+            border-radius: 9px;
+            font: inherit;
+            background: white;
+            color: var(--text);
+        }
+
+        textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: 2px solid #9bbdae;
+            border-color: var(--green);
+        }
+
+        button,
+        .button {
+            display: inline-block;
+            border: none;
+            border-radius: 9px;
+            padding: 12px 18px;
+            background: var(--green);
+            color: white;
+            font: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 18px;
+        }
+
+        button:hover,
+        .button:hover {
+            background: #23644f;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        .secondary-button {
+            background: #e8eee9;
+            color: var(--green);
+        }
+
+        .secondary-button:hover {
+            background: #dbe7df;
+        }
+
+        .status {
+            display: none;
+            padding: 13px 15px;
+            margin: 18px 0;
+            border-radius: 9px;
+            background: var(--green-light);
+            color: var(--green);
+        }
+
+        .status.error {
+            background: #fbeaea;
+            color: var(--red);
+        }
+
+        .report {
+            display: none;
+        }
+
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .score-circle {
+            width: 112px;
+            height: 112px;
+            border: 7px solid #dce9df;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .score-number {
+            font-size: 30px;
+            font-weight: bold;
+            color: var(--green);
+            line-height: 1.1;
+        }
+
+        .score-label {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .verdict {
+            display: inline-block;
+            background: var(--green-light);
+            color: var(--green);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+
+        .report-section {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            overflow-wrap: anywhere;
+        }
+
+        .report-section:last-child {
+            border-bottom: none;
+        }
+
+        .report-section h3 {
+            color: var(--green);
+            margin-top: 0;
+        }
+
+        .report-section p {
+            white-space: pre-wrap;
+        }
+
+        .report-section ul,
+        .report-section ol {
+            padding-left: 24px;
+        }
+
+        .report-section li {
+            margin-bottom: 7px;
+        }
+
+        .score-row {
+            margin: 15px 0;
+        }
+
+        .score-row-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-weight: bold;
+        }
+
+        .score-track {
+            height: 9px;
+            background: #e9eeea;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: var(--green);
+            border-radius: 20px;
+        }
+
+        .item-card {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+            margin: 12px 0;
+        }
+
+        .item-card h4 {
+            margin: 0 0 6px;
+            color: var(--green);
+        }
+
+        .disclaimer {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--muted);
+            padding: 30px 15px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 16px 4%;
+            }
+
+            .container {
+                width: 94%;
+                margin-top: 20px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .header-links {
+                gap: 12px;
+                font-size: 14px;
+            }
+        }
+
+        @media print {
+            header,
+            #ideaFormCard,
+            #reportActions,
+            footer {
+                display: none !important;
+            }
+
+            body {
+                background: white;
+            }
+
+            .container {
+                width: 100%;
+                margin: 0;
+            }
+
+            .card {
+                box-shadow: none;
+                border: none;
+            }
+
+            .report {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="brand">Startup <span>Validator AI</span></div>
+
+        <nav class="header-links">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div class="eyebrow">Your idea, evaluated thoughtfully</div>
+            <h1>Turn your startup idea into a clear action plan.</h1>
+            <p class="subtitle">
+                Describe your idea and receive an AI-generated assessment of
+                the opportunity, target customers, competitors, risks, and
+                next steps.
+            </p>
+        </section>
+
+        <section class="card" id="ideaFormCard">
+            <h2>Describe your startup</h2>
+            <p class="subtitle">
+                Provide as much detail as you can. The quality of the analysis
+                depends on the information you provide.
+            </p>
+
+            <form id="ideaForm">
+                <label for="idea">Startup idea</label>
+                <textarea
+                    id="idea"
+                    name="idea"
+                    placeholder="Describe the problem, your proposed solution, and how it would work..."
+                    required
+                    minlength="10"
+                ></textarea>
+
+                <label for="industry">Industry</label>
+                <select id="industry" name="industry" required>
+                    <option value="">Choose an industry</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Education">Education</option>
+                    <option value="Finance">Finance</option>
+                    <option value="E-commerce">E-commerce</option>
+                    <option value="Food and Beverage">Food and Beverage</option>
+                    <option value="Environment">Environment</option>
+                    <option value="Agriculture">Agriculture</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <label for="customers">Target customers</label>
+                <input
+                    type="text"
+                    id="customers"
+                    name="customers"
+                    placeholder="e.g. college students, small businesses, parents"
+                    required
+                >
+
+                <button type="submit" id="analyzeButton">
+                    Analyze My Idea
+                </button>
+            </form>
+
+            <div id="statusMessage" class="status" role="status" aria-live="polite"></div>
+        </section>
+
+        <section id="report" class="report" aria-live="polite">
+            <div class="card">
+                <div class="report-header">
+                    <div>
+                        <div class="eyebrow">Startup assessment</div>
+                        <h2 id="reportTitle">Your Startup Report</h2>
+                        <div id="reportVerdict" class="verdict">Analysis complete</div>
+                        <p id="reportSummary"></p>
+                    </div>
+
+                    <div class="score-circle">
+                        <span id="overallScore" class="score-number">--</span>
+                        <span class="score-label">OUT OF 100</span>
+                    </div>
+                </div>
+
+                <p class="disclaimer">
+                    This report is an AI-generated preliminary assessment, not
+                    a guarantee of success. Market, financial, and competitor
+                    claims should be independently verified.
+                </p>
+
+                <div id="reportActions">
+                    <button type="button" id="downloadPdfButton">
+                        Download PDF
+                    </button>
+                    <button type="button" class="secondary-button" id="printButton">
+                        Print Report
+                    </button>
+                    <button type="button" class="secondary-button" id="newAnalysisButton">
+                        Analyze Another Idea
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div id="reportSections"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        Startup Idea Validator AI · Validate assumptions before investing.
+    </footer>
+
+    <script>
+        "use strict";
+
+        const form = document.getElementById("ideaForm");
+        const analyzeButton = document.getElementById("analyzeButton");
+        const statusMessage = document.getElementById("statusMessage");
+        const reportElement = document.getElementById("report");
+        const reportSections = document.getElementById("reportSections");
+
+        let currentAnalysis = null;
+
+        function showStatus(message, isError = false) {
+            statusMessage.textContent = message;
+            statusMessage.classList.toggle("error", isError);
+            statusMessage.style.display = "block";
+        }
+
+        function hideStatus() {
+            statusMessage.textContent = "";
+            statusMessage.style.display = "none";
+            statusMessage.classList.remove("error");
+        }
+
+        function makeElement(tag, className, text) {
+            const element = document.createElement(tag);
+
+            if (className) {
+                element.className = className;
+            }
+
+            if (text !== undefined && text !== null) {
+                element.textContent = String(text);
+            }
+
+            return element;
+        }
+
+        function addText(parent, value) {
+            if (value === null || value === undefined || value === "") {
+                return;
+            }
+
+            if (Array.isArray(value)) {
+                const list = makeElement("ul");
+
+                value.forEach(function (item) {
+                    const li = makeElement("li");
+
+                    if (item !== null && typeof item === "object") {
+                        li.textContent = Object.entries(item)
+                            .map(function (entry) {
+                                return entry[0].replace(/_/g, " ") + ": " + String(entry[1]);
+                            })
+                            .join(" | ");
+                    } else {
+                        li.textContent = String(item);
+                    }
+
+                    list.appendChild(li);
+                });
+
+                parent.appendChild(list);
+                return;
+            }
+
+            if (typeof value === "object") {
+                Object.entries(value).forEach(function (entry) {
+                    const label = entry[0].replace(/_/g, " ");
+                    const subsection = makeElement("div", "item-card");
+                    const heading = makeElement("h4", "", label);
+
+                    subsection.appendChild(heading);
+                    addText(subsection, entry[1]);
+                    parent.appendChild(subsection);
+                });
+
+                return;
+            }
+
+            parent.appendChild(makeElement("p", "", value));
+        }
+
+        function addSection(title, value) {
+            if (
+                value === null ||
+                value === undefined ||
+                value === "" ||
+                (Array.isArray(value) && value.length === 0)
+            ) {
+                return;
+            }
+
+            const section = makeElement("section", "report-section");
+            section.appendChild(makeElement("h3", "", title));
+            addText(section, value);
+            reportSections.appendChild(section);
+        }
+
+        function renderScores(scores, explanations) {
+            if (!scores || typeof scores !== "object") {
+                return;
+            }
+
+            const section = makeElement("section", "report-section");
+            section.appendChild(makeElement("h3", "", "Evaluation Scores"));
+
+            Object.entries(scores).forEach(function (entry) {
+                const key = entry[0];
+                const rawValue = Number(entry[1]);
+
+                if (!Number.isFinite(rawValue)) {
+                    return;
+                }
+
+                const value = Math.max(0, Math.min(100, rawValue));
+                const row = makeElement("div", "score-row");
+                const top = makeElement("div", "score-row-top");
+                const label = makeElement("span", "", key.replace(/_/g, " "));
+                const score = makeElement("span", "", value + "/100");
+                const track = makeElement("div", "score-track");
+                const fill = makeElement("div", "score-fill");
+
+                fill.style.width = value + "%";
+                track.appendChild(fill);
+                top.appendChild(label);
+                top.appendChild(score);
+                row.appendChild(top);
+                row.appendChild(track);
+
+                if (
+                    explanations &&
+                    Object.prototype.hasOwnProperty.call(explanations, key)
+                ) {
+                    addText(row, explanations[key]);
+                }
+
+                section.appendChild(row);
+            });
+
+            reportSections.appendChild(section);
+        }
+
+        function displayAnalysis(data) {
+            if (!data || typeof data !== "object") {
+                showStatus("The server returned an invalid report. Please try again.", true);
+                return;
+            }
+
+            currentAnalysis = data;
+
+            const reportTitle = document.getElementById("reportTitle");
+            const reportVerdict = document.getElementById("reportVerdict");
+            const reportSummary = document.getElementById("reportSummary");
+            const overallScore = document.getElementById("overallScore");
+
+            reportTitle.textContent = data.startup_name || "Startup Report";
+            reportVerdict.textContent = data.verdict || "Analysis complete";
+            reportSummary.textContent = data.executive_summary || "No summary was provided.";
+
+            const numericScore = Number(data.score);
+            overallScore.textContent = Number.isFinite(numericScore)
+                ? String(Math.max(0, Math.min(100, numericScore)))
+                : "--";
+
+            reportSections.replaceChildren();
+
+            renderScores(data.scores, data.score_explanations);
+
+            const sections = [
+                ["Startup Overview", "startup_overview"],
+                ["Problem Analysis", "problem_analysis"],
+                ["Proposed Solution", "proposed_solution"],
+                ["Real-Life Example", "real_life_example"],
+                ["Market Analysis", "market_analysis"],
+                ["Customer Analysis", "customer_analysis"],
+                ["Customer Personas", "customer_personas"],
+                ["Competitor Analysis", "competitor_analysis"],
+                ["Unique Value Proposition", "unique_value_proposition"],
+                ["Business Model", "business_model"],
+                ["Pricing Strategy", "pricing_strategy"],
+                ["Cost Considerations", "cost_considerations"],
+                ["Technology Requirements", "technology_requirements"],
+                ["Team Requirements", "team_requirements"],
+                ["Strengths", "strengths"],
+                ["Weaknesses", "weaknesses"],
+                ["Revenue Opportunities", "revenue_opportunities"],
+                ["MVP Features", "mvp_features"],
+                ["MVP Development Plan", "mvp_development"],
+                ["Risks and Solutions", "risks_and_solutions"],
+                ["Recommended Improvements", "improvements"],
+                ["Detailed Improvements", "detailed_improvements"],
+                ["Four-Week Action Plan", "action_plan"],
+                ["90-Day Roadmap", "roadmap_90_days"],
+                ["Validation Experiments", "validation_experiments"],
+                ["Assumptions to Verify", "assumptions_to_verify"],
+                ["Final Recommendation", "recommendation"]
+            ];
+
+            sections.forEach(function (section) {
+                addSection(section[0], data[section[1]]);
+            });
+
+            reportElement.style.display = "block";
+            reportElement.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+            hideStatus();
+
+            const idea = document.getElementById("idea").value.trim();
+            const industry = document.getElementById("industry").value;
+            const customers = document.getElementById("customers").value.trim();
+
+            if (idea.length < 10) {
+                showStatus("Please describe your idea in at least 10 characters.", true);
+                return;
+            }
+
+            if (!industry || !customers) {
+                showStatus("Please select an industry and enter your target customers.", true);
+                return;
+            }
+
+            analyzeButton.disabled = true;
+            analyzeButton.textContent = "Analyzing...";
+            showStatus("Analyzing your idea. This may take a little while.");
+
+            try {
+                const response = await fetch("{{ url_for('validate') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify({
+                        idea: idea,
+                        industry: industry,
+                        customers: customers
+                    })
+                });
+
+                let result;
+
+                try {
+                    result = await response.json();
+                } catch (parseError) {
+                    throw new Error("The server returned an unexpected response. Check the Flask terminal.");
+                }
+
+                if (!response.ok) {
+                    throw new Error(
+                        result.error ||
+                        result.message ||
+                        "Analysis failed. Please try again."
+                    );
+                }
+
+                const analysis = result.analysis || result;
+
+                if (!analysis || typeof analysis !== "object") {
+                    throw new Error("The server response did not contain an analysis.");
+                }
+
+                hideStatus();
+                displayAnalysis(analysis);
+
+                showStatus("Your report is ready. It has been saved if the server save completed successfully.");
+            } catch (error) {
+                console.error("Startup analysis error:", error);
+                showStatus(
+                    error.message || "Something went wrong. Make sure the Flask server is running.",
+                    true
+                );
+            } finally {
+                analyzeButton.disabled = false;
+                analyzeButton.textContent = "Analyze My Idea";
+            }
+        });
+
+        document.getElementById("downloadPdfButton").addEventListener("click", function () {
+            if (!currentAnalysis) {
+                showStatus("Generate a report before downloading the PDF.", true);
+                return;
+            }
+
+            if (!window.jspdf || !window.jspdf.jsPDF) {
+                showStatus("The PDF library did not load. Please check your internet connection or use Print Report.", true);
+                return;
+            }
+
+            const jsPDF = window.jspdf.jsPDF;
+            const pdf = new jsPDF();
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
+            const margin = 15;
+            const maxWidth = pageWidth - margin * 2;
+            let y = 20;
+
+            function ensureSpace(height) {
+                if (y + height > pageHeight - margin) {
+                    pdf.addPage();
+                    y = 20;
+                }
+            }
+
+            function writeParagraph(label, value) {
+                if (value === null || value === undefined || value === "") {
+                    return;
+                }
+
+                let content;
+
+                if (Array.isArray(value)) {
+                    content = value.map(function (item) {
+                        return typeof item === "object"
+                            ? JSON.stringify(item)
+                            : String(item);
+                    }).join("\n");
+                } else if (typeof value === "object") {
+                    content = Object.entries(value).map(function (entry) {
+                        return entry[0].replace(/_/g, " ") + ": " +
+                            (typeof entry[1] === "object"
+                                ? JSON.stringify(entry[1])
+                                : String(entry[1]));
+                    }).join("\n");
+                } else {
+                    content = String(value);
+                }
+
+                pdf.setFont("helvetica", "bold");
+                const headingLines = pdf.splitTextToSize(label, maxWidth);
+                ensureSpace(headingLines.length * 7 + 4);
+                pdf.text(headingLines, margin, y);
+                y += headingLines.length * 7;
+
+                pdf.setFont("helvetica", "normal");
+                const lines = pdf.splitTextToSize(content, maxWidth);
+
+                lines.forEach(function (line) {
+                    ensureSpace(6);
+                    pdf.text(line, margin, y);
+                    y += 6;
+                });
+
+                y += 5;
+            }
+
+            pdf.setFontSize(18);
+            pdf.setFont("helvetica", "bold");
+
+            const title = pdf.splitTextToSize(
+                currentAnalysis.startup_name || "Startup Idea Validation Report",
+                maxWidth
+            );
+
+            pdf.text(title, margin, y);
+            y += title.length * 8 + 4;
+
+            pdf.setFontSize(11);
+
+            writeParagraph("Overall Score", currentAnalysis.score);
+            writeParagraph("Verdict", currentAnalysis.verdict);
+            writeParagraph("Executive Summary", currentAnalysis.executive_summary);
+
+            const skipKeys = new Set([
+                "startup_name",
+                "score",
+                "verdict",
+                "executive_summary"
+            ]);
+
+            Object.entries(currentAnalysis).forEach(function (entry) {
+                if (!skipKeys.has(entry[0])) {
+                    writeParagraph(entry[0].replace(/_/g, " "), entry[1]);
+                }
+            });
+
+            pdf.save("startup-validation-report.pdf");
+        });
+
+        document.getElementById("printButton").addEventListener("click", function () {
+            window.print();
+        });
+
+        document.getElementById("newAnalysisButton").addEventListener("click", function () {
+            form.reset();
+            currentAnalysis = null;
+            reportElement.style.display = "none";
+            hideStatus();
+            document.getElementById("ideaFormCard").scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        });
+
+        {% if saved_analysis is defined and saved_analysis %}
+        displayAnalysis({{ saved_analysis | tojson }});
+        {% endif %}
+    </script>
+</body>
+</html>

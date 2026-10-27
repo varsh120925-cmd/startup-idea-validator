@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | Startup Validator AI</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            font-family: Arial, sans-serif;
+            background: #f5f7f2;
+            color: #172c25;
+        }
+        .card {
+            width: 100%;
+            max-width: 440px;
+            padding: 38px;
+            background: white;
+            border: 1px solid #e3e9e1;
+            border-radius: 20px;
+            box-shadow: 0 15px 45px #193c2510;
+        }
+        .brand { color: #23734d; font-weight: bold; letter-spacing: .3px; }
+        h1 { margin: 20px 0 8px; font-size: 30px; }
+        .muted { color: #718078; line-height: 1.6; }
+        label { display: block; margin: 18px 0 8px; font-weight: 600; }
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d7e0d8;
+            border-radius: 9px;
+            font-size: 15px;
+        }
+        input:focus { outline: 2px solid #8dc7a4; border-color: #23734d; }
+        button {
+            width: 100%;
+            margin-top: 24px;
+            padding: 14px;
+            border: 0;
+            border-radius: 9px;
+            background: #216747;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover { background: #174d35; }
+        .bottom { text-align: center; margin-top: 24px; font-size: 14px; }
+        a { color: #216747; font-weight: bold; text-decoration: none; }
+        .message { padding: 11px; margin: 12px 0; border-radius: 8px; background: #fff0ed; color: #9b3025; }
+    </style>
+</head>
+<body>
+    <main class="card">
+        <div class="brand">✦ STARTUP VALIDATOR AI</div>
+        <h1>Create your account</h1>
+        <p class="muted">Turn your business ideas into a practical validation plan.</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('register') }}">
+            <label for="name">Your name</label>
+            <input id="name" type="text" name="name"
+                   placeholder="Enter your name" autocomplete="name" maxlength="100" required>
+
+            <label for="email">Email address</label>
+            <input id="email" type="email" name="email"
+                   placeholder="you@example.com" autocomplete="email" maxlength="254" required>
+
+            <label for="password">Create a password</label>
+            <input id="password" type="password" name="password"
+                   placeholder="At least 8 characters"
+                   minlength="8" autocomplete="new-password" required>
+
+            <button type="submit">Create account →</button>
+        </form>
+
+        <p class="bottom">Already registered? <a href="{{ url_for('login') }}">Sign in</a></p>
+    </main>
+</body>
+</html>

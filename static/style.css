@@ -1,0 +1,716 @@
+
+/* =========================================
+   STARTUP IDEA VALIDATOR
+   LIGHT GOLDEN PREMIUM THEME
+========================================= */
+
+/* GLOBAL COLORS */
+
+:root {
+    --page: #fffcf5;
+    --surface: #ffffff;
+    --surface-soft: #fff8e9;
+    --surface-muted: #fff2d5;
+
+    --primary: #b88734;
+    --primary-hover: #966b25;
+    --accent: #e8c77b;
+
+    --text: #38342d;
+    --text-secondary: #6b6254;
+
+    --border: #efe3cc;
+
+    --shadow: 0 12px 35px rgba(151, 119, 57, 0.08);
+}
+
+/* BASIC RESET */
+
+* {
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    font-family: "Segoe UI", Arial, sans-serif;
+
+    background: var(--page);
+    color: var(--text);
+
+    line-height: 1.65;
+}
+
+/* =========================================
+   HERO SECTION
+========================================= */
+
+.hero {
+    background: linear-gradient(
+        135deg,
+        #fffdf7 0%,
+        #fff4da 55%,
+        #ffedc6 100%
+    );
+
+    padding: 70px 20px 95px;
+
+    text-align: center;
+
+    border-bottom: 1px solid #eadbbf;
+}
+
+.hero-content {
+    max-width: 850px;
+    margin: auto;
+}
+
+.brand {
+    display: inline-block;
+
+    color: #a77a2e;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 22px;
+}
+
+.hero h1 {
+    margin: 0 0 18px;
+
+    color: #38342d;
+
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 800;
+
+    letter-spacing: -1px;
+    line-height: 1.18;
+}
+
+.hero p {
+    max-width: 650px;
+
+    margin: 0 auto;
+
+    color: var(--text-secondary);
+
+    font-size: 17px;
+}
+
+.hero-tags {
+    display: flex;
+
+    justify-content: center;
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 27px;
+}
+
+.hero-tags span {
+    padding: 7px 14px;
+
+    border-radius: 50px;
+
+    border: 1px solid #e9d6ae;
+
+    background: #ffffff;
+
+    color: #9a702b;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* =========================================
+   MAIN CONTAINER
+========================================= */
+
+.container {
+    max-width: 1150px;
+
+    margin: -38px auto 70px;
+
+    padding: 0 20px;
+
+    position: relative;
+}
+
+/* =========================================
+   CARDS
+========================================= */
+
+.form-card,
+.score-card,
+.breakdown-card,
+.report-card {
+    background: #ffffff;
+
+    border: 1px solid var(--border);
+
+    border-radius: 18px;
+
+    box-shadow: var(--shadow);
+}
+
+.form-card {
+    max-width: 850px;
+
+    margin: 0 auto;
+
+    padding: 38px;
+}
+
+/* =========================================
+   HEADINGS
+========================================= */
+
+.section-label {
+    color: #a77a2e;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+h2 {
+    margin: 10px 0;
+
+    color: #38342d;
+
+    font-size: 27px;
+}
+
+h3 {
+    margin: 0 0 16px;
+
+    color: #8d682c;
+
+    font-size: 18px;
+}
+
+.muted {
+    color: #78716c;
+}
+
+.form-card > p {
+    margin-bottom: 27px;
+}
+
+/* =========================================
+   FORM
+========================================= */
+
+form {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+label {
+    margin-top: 8px;
+
+    color: #44403c;
+
+    font-size: 14px;
+    font-weight: 650;
+}
+
+input,
+textarea {
+    width: 100%;
+
+    padding: 15px 16px;
+
+    border: 1px solid #e6d9c0;
+
+    border-radius: 11px;
+
+    background: #fffdf8;
+
+    color: var(--text);
+
+    font: inherit;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #a8a29e;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+
+    background: #ffffff;
+
+    border-color: #d6ad59;
+
+    box-shadow:
+        0 0 0 4px rgba(232, 199, 123, 0.2);
+}
+
+textarea {
+    min-height: 130px;
+
+    resize: vertical;
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+button {
+    border: none;
+
+    border-radius: 11px;
+
+    padding: 15px 22px;
+
+    background: linear-gradient(
+        135deg,
+        #c69a45,
+        #ae7f2f
+    );
+
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s,
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+button:hover:not(:disabled) {
+    background: linear-gradient(
+        135deg,
+        #ae7f2f,
+        #966b25
+    );
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 22px rgba(174, 127, 47, 0.2);
+}
+
+button:focus-visible {
+    outline: 3px solid #e8c77b;
+
+    outline-offset: 3px;
+}
+
+button:disabled {
+    opacity: 0.65;
+
+    cursor: wait;
+}
+
+#validateButton {
+    margin-top: 18px;
+}
+
+/* =========================================
+   STATUS MESSAGES
+========================================= */
+
+#statusMessage:not(:empty) {
+    margin-top: 20px;
+
+    padding: 13px 16px;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+}
+
+#statusMessage.loading {
+    background: #fff5df;
+
+    color: #946b29;
+}
+
+#statusMessage.success {
+    background: #dcfce7;
+
+    color: #166534;
+}
+
+#statusMessage.error {
+    background: #fee2e2;
+
+    color: #b91c1c;
+}
+
+/* =========================================
+   DASHBOARD
+========================================= */
+
+.dashboard {
+    margin-top: 48px;
+}
+
+.dashboard-heading {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 26px;
+}
+
+.dashboard-heading h2 {
+    color: #38342d;
+
+    font-size: 32px;
+}
+
+/* =========================================
+   PDF DOWNLOAD BUTTONS
+========================================= */
+
+.download-btn,
+.download-bottom {
+    background: linear-gradient(
+        135deg,
+        #c69a45,
+        #ae7f2f
+    );
+}
+
+.download-btn:hover:not(:disabled),
+.download-bottom:hover:not(:disabled) {
+    background: #966b25;
+
+    box-shadow:
+        0 8px 22px rgba(174, 127, 47, 0.2);
+}
+
+/* =========================================
+   SCORE SECTION
+========================================= */
+
+.score-layout {
+    display: grid;
+
+    grid-template-columns: 1fr 1.5fr;
+
+    gap: 20px;
+
+    margin-bottom: 20px;
+}
+
+.score-card,
+.breakdown-card {
+    padding: 28px;
+}
+
+.score-card {
+    text-align: center;
+}
+
+.score-circle {
+    width: 190px;
+    height: 190px;
+
+    margin: 25px auto 15px;
+
+    border: 12px solid #e8c77b;
+
+    border-radius: 50%;
+
+    background: #fff9eb;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 4px;
+}
+
+.score-circle span {
+    color: #a77a2e;
+
+    font-size: 58px;
+    font-weight: 800;
+}
+
+.score-circle small {
+    color: #78716c;
+
+    font-size: 17px;
+}
+
+.score-card p {
+    color: #78716c;
+
+    font-size: 13px;
+}
+
+/* =========================================
+   SCORE BREAKDOWN
+========================================= */
+
+.score-row {
+    margin-bottom: 17px;
+}
+
+.score-row-heading {
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 7px;
+
+    color: #57534e;
+
+    font-size: 13px;
+}
+
+.score-row-heading strong {
+    color: #a77a2e;
+}
+
+.progress-track {
+    height: 9px;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: #f5ead2;
+}
+
+.progress-fill {
+    height: 100%;
+
+    border-radius: 20px;
+
+    background: linear-gradient(
+        90deg,
+        #e8c77b,
+        #c69a45
+    );
+}
+
+/* =========================================
+   NOTICE
+========================================= */
+
+.notice {
+    padding: 14px 18px;
+
+    margin-bottom: 25px;
+
+    border: 1px solid #f0dfb5;
+
+    border-radius: 12px;
+
+    background: #fffaeb;
+
+    color: #866329;
+
+    font-size: 13px;
+}
+
+/* =========================================
+   REPORT GRID
+========================================= */
+
+.report-grid {
+    display: grid;
+
+    grid-template-columns: repeat(
+        2,
+        minmax(0, 1fr)
+    );
+
+    gap: 20px;
+}
+
+.report-card {
+    padding: 27px;
+
+    overflow-wrap: anywhere;
+}
+
+.report-card.wide {
+    grid-column: 1 / -1;
+}
+
+.report-card h3 {
+    padding-bottom: 13px;
+
+    border-bottom: 1px solid #eee4d7;
+}
+
+.report-card p {
+    margin: 0;
+
+    color: #57534e;
+
+    white-space: pre-line;
+}
+
+.report-card ul {
+    margin: 0;
+
+    padding-left: 21px;
+
+    color: #57534e;
+}
+
+.report-card li {
+    margin-bottom: 11px;
+}
+
+.report-card li::marker {
+    color: #c69a45;
+}
+
+/* =========================================
+   30-DAY ACTION PLAN
+========================================= */
+
+.action-plan {
+    display: grid;
+
+    grid-template-columns: repeat(
+        2,
+        minmax(0, 1fr)
+    );
+
+    gap: 15px;
+}
+
+.week-card {
+    padding: 20px;
+
+    border: 1px solid #efe0bf;
+
+    border-radius: 12px;
+
+    background: #fffbf2;
+}
+
+.week-card h4 {
+    margin: 0 0 10px;
+
+    color: #a77a2e;
+}
+
+/* =========================================
+   FINAL RECOMMENDATION
+========================================= */
+
+.recommendation {
+    border-color: #e8d2a4;
+
+    background: linear-gradient(
+        135deg,
+        #fffdf7,
+        #fff2d5
+    );
+}
+
+.download-bottom {
+    display: block;
+
+    margin: 30px auto 0;
+
+    min-width: 280px;
+}
+
+/* =========================================
+   FOOTER
+========================================= */
+
+footer {
+    padding: 25px;
+
+    border-top: 1px solid var(--border);
+
+    color: #78716c;
+
+    text-align: center;
+
+    font-size: 13px;
+}
+
+/* =========================================
+   MOBILE RESPONSIVE DESIGN
+========================================= */
+
+@media (max-width: 750px) {
+
+    .hero {
+        padding: 45px 18px 75px;
+    }
+
+    .container {
+        padding: 0 14px;
+    }
+
+    .form-card {
+        padding: 23px;
+    }
+
+    .dashboard-heading {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .score-layout,
+    .report-grid,
+    .action-plan {
+        grid-template-columns: 1fr;
+    }
+
+    .report-card.wide {
+        grid-column: auto;
+    }
+
+    .score-card,
+    .breakdown-card,
+    .report-card {
+        padding: 22px;
+    }
+
+    .download-bottom {
+        width: 100%;
+
+        min-width: 0;
+    }
+}
+

@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign In | Startup Validator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body{margin:0;background:#f7f8f5;font-family:Arial,sans-serif;color:#183c2b}
+        .auth{max-width:430px;margin:7vh auto;padding:32px;background:white;border:1px solid #e4e9e2;border-radius:20px;box-shadow:0 12px 40px #173c2b0b}
+        .brand{color:#236745;font-weight:800;letter-spacing:1px;font-size:13px}
+        h1{font-size:30px;margin:22px 0 8px}
+        .muted{color:#6c796f;line-height:1.6}
+        label{display:block;font-weight:700;margin:18px 0 7px}
+        input{width:100%;box-sizing:border-box;padding:13px;border:1px solid #d6dfd5;border-radius:10px;font-size:15px}
+        button{width:100%;margin-top:22px;background:#216747;color:white;border:0;border-radius:10px;padding:14px;font-size:16px;font-weight:700;cursor:pointer}
+        a{color:#216747}
+        .message{padding:11px;border-radius:9px;background:#fff0ed;color:#923d30;margin:10px 0}
+        .foot{text-align:center;margin-top:22px}
+    </style>
+</head>
+<body>
+    <main class="auth">
+        <div class="brand">STARTUP INTELLIGENCE</div>
+        <h1>Welcome back.</h1>
+        <p class="muted">Sign in to continue validating your startup ideas and access your saved reports.</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('login') }}">
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email" autocomplete="email" required maxlength="254">
+
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required>
+
+            <button type="submit">Sign in</button>
+        </form>
+        <p class="foot">New here? <a href="{{ url_for('register') }}">Create an account</a></p>
+    </main>
+</body>
+</html>
+

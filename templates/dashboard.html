@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Startup Validator AI</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: Arial, sans-serif; background: #f5f7f2; color: #172c25; }
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            gap: 16px; padding: 20px 6%; background: white;
+            border-bottom: 1px solid #e3e9e1;
+        }
+        .brand { color: #23734d; font-weight: bold; }
+        a { color: #216747; text-decoration: none; font-weight: bold; }
+        .logout { color: #68786f; font-size: 14px; }
+        main { max-width: 1050px; margin: 40px auto; padding: 0 22px; }
+        .welcome { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+        h1 { font-size: clamp(28px, 4vw, 38px); margin: 8px 0; }
+        p { color: #718078; line-height: 1.6; }
+        .eyebrow { color: #23734d; font-weight: bold; font-size: 12px; letter-spacing: 1px; }
+        .primary {
+            display: inline-block; padding: 14px 18px; border-radius: 9px;
+            background: #216747; color: white;
+        }
+        .primary:hover { background: #174d35; }
+        .section-title { margin-top: 42px; font-size: 22px; }
+        .reports { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; margin-top: 20px; }
+        .report {
+            padding: 22px; background: white; border: 1px solid #e3e9e1;
+            border-radius: 14px; overflow-wrap: anywhere;
+        }
+        .report h3 { margin-top: 0; }
+        .tag { display: inline-block; padding: 6px 9px; background: #eaf4ec; color: #216747; border-radius: 20px; font-size: 12px; }
+        .date { font-size: 13px; }
+        .empty {
+            padding: 40px 20px; text-align: center; background: white;
+            border: 1px dashed #cbd8ce; border-radius: 14px;
+        }
+        .message { padding: 12px; margin: 18px 0; border-radius: 8px; background: #e8f7ed; color: #216747; }
+        @media (max-width: 500px) { header { padding: 18px; } main { margin-top: 28px; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">✦ STARTUP VALIDATOR AI</div>
+        <a class="logout" href="{{ url_for('logout') }}">Sign out ↗</a>
+    </header>
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <section class="welcome">
+            <div>
+                <div class="eyebrow">YOUR WORKSPACE</div>
+                <h1>Welcome, {{ user['name'] }}.</h1>
+                <p>Your next big idea starts with a question worth testing.</p>
+            </div>
+            <a class="primary" href="{{ url_for('new_report') }}">+ Validate a new idea</a>
+        </section>
+
+        <h2 class="section-title">Your saved reports</h2>
+        <p>Every completed analysis is saved to your account so you can revisit it later.</p>
+
+        {% if reports %}
+            <section class="reports">
+                {% for report in reports %}
+                    <article class="report">
+                        <span class="tag">{{ report['industry'] }}</span>
+                        <h3>{{ report['idea'][:100] }}{% if report['idea']|length > 100 %}…{% endif %}</h3>
+                        <p class="date">Created: {{ report['created_at'] }}</p>
+                        <a href="{{ url_for('view_report', report_id=report['id']) }}">Open report →</a>
+                        <form method="POST" action="{{ url_for('delete_report', report_id=report['id']) }}"
+                              onsubmit="return confirm('Delete this saved report?');">
+                            <button type="submit" style="margin-top:18px;background:none;border:0;padding:0;color:#9b3025;cursor:pointer;">
+                                Delete report
+                            </button>
+                        </form>
+                    </article>
+                {% endfor %}
+            </section>
+        {% else %}
+            <section class="empty">
+                <h3>Your workspace is ready.</h3>
+                <p>You haven't created a report yet. Start by describing a startup idea you'd like to test.</p>
+                <a class="primary" href="{{ url_for('new_report') }}">Create your first report →</a>
+            </section>
+        {% endif %}
+    </main>
+</body>
+</html>
